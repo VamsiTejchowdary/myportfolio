@@ -24,9 +24,13 @@ const MagicButton = ({
   mailToLink?: string;
 }) => {
   const handleMailTo = () => {
-    if (mailToLink) {
-      window.location.href = mailToLink; // Trigger mailto link
+    // Check if we're running on the client side (browser)
+    if (typeof window !== "undefined") {
+      if (mailToLink) {
+        window.location.href = mailToLink; // Trigger mailto link
+      }
     }
+
     if (handleClick) {
       handleClick(); // Call custom handleClick if provided
     }
