@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import dynamic from "next/dynamic";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Footer from "@/components/Footer";
-import Clients from "@/components/Clients";
+import GoodWords from "@/components/Clients";
 import Approach from "@/components/Approach";
 import Experience from "@/components/Experience";
 import RecentProjects from "@/components/RecentProjects";
@@ -20,8 +20,8 @@ const Home = () => {
         <Hero />
         <Grid />
         <RecentProjects />
-        <Clients />
         <Experience />
+        <GoodWords />
         <Footer />
       </div>
     </main>

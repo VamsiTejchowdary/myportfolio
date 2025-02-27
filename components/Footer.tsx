@@ -1,23 +1,22 @@
 "use client";
 import { FaLocationArrow } from "react-icons/fa6";
-
 import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 
 const Footer = () => {
   return (
-    <footer className="w-full pt-20 pb-10" id="contact">
-      {/* background grid */}
+    <footer className="w-full pt-20 pb-10 px-6 md:px-16" id="contact">
+      {/* Background Grid */}
       <div className="w-full absolute left-0 -bottom-72 min-h-96">
         <img
           src="/footer-grid.svg"
           alt="grid"
-          className="w-full h-full opacity-50 "
+          className="w-full h-full opacity-50"
         />
       </div>
 
-      <div className="flex flex-col items-center">
-        <h1 className="heading lg:max-w-[45vw]">
+      <div className="container max-w-screen-lg mx-auto flex flex-col items-center">
+        <h1 className="heading lg:max-w-[45vw] text-center">
           Ready to take <span className="text-purple">your</span> digital
           presence to the next level?
         </h1>
@@ -29,15 +28,16 @@ const Footer = () => {
           title="Let's get in touch"
           icon={<FaLocationArrow />}
           position="right"
-          mailToLink="mailto:contact@jsmastery.pro" // Trigger the mailto link directly
+          mailToLink="mailto:d.vamsitej333@gmail.com"
         />
       </div>
-      <div className="flex mt-16 md:flex-row flex-col justify-between items-center">
+
+      <div className="container max-w-screen-lg mx-auto flex mt-16 md:flex-row flex-col justify-start items-center">
         <p className="md:text-base text-sm md:font-normal font-light">
           Copyright © 2025 Vamsi Tej Chowdary
         </p>
 
-        <div className="flex items-center md:gap-3 gap-6">
+        <div className="flex items-center md:gap-3 gap-6 ml-auto md:ml-50 md:pl-10">
           {socialMedia.map((info) => (
             <div
               key={info.id}
