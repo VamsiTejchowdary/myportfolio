@@ -1,15 +1,16 @@
 "use client";
-
 import { navItems } from "@/data";
-
 import Hero from "@/components/Hero";
-import Grid from "@/components/Grid";
+import dynamic from "next/dynamic";
+import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Footer from "@/components/Footer";
 import Clients from "@/components/Clients";
 import Approach from "@/components/Approach";
 import Experience from "@/components/Experience";
 import RecentProjects from "@/components/RecentProjects";
-import { FloatingNav } from "@/components/ui/FloatingNavbar";
+
+// Dynamically import Grid to avoid server-side rendering issues
+const Grid = dynamic(() => import("@/components/Grid"), { ssr: false });
 
 const Home = () => {
   return (
@@ -17,9 +18,11 @@ const Home = () => {
       <div className="max-w-7xl w-full">
         <FloatingNav navItems={navItems} />
         <Hero />
-        {/* <Grid /> */}
+        <Grid />
         <RecentProjects />
+        <Clients />
         <Experience />
+        <Approach />
         <Footer />
       </div>
     </main>
