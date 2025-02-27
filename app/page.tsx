@@ -22,7 +22,6 @@ const Home = () => {
         <RecentProjects />
         <Clients />
         <Experience />
-        <Approach />
         <Footer />
       </div>
     </main>
