@@ -26,38 +26,68 @@ const Experience = () => {
               {/* Subtle gradient overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
 
-              {/* Company Logo with increased size */}
-              <div className="absolute top-4 right-4 bg-black/20 p-2 rounded-full backdrop-blur-sm border border-white/5">
-                <img
-                  src={card.companyLogo}
-                  alt={`${card.title} logo`}
-                  className="w-12 h-12 object-contain" // Increased from w-8 h-8 to w-12 h-12
-                />
-              </div>
-
-              {/* Row with thumbnail */}
-              <div className="flex items-center gap-5 mb-3 relative z-10">
-                <div className="overflow-hidden rounded-xl w-20 h-20 flex-shrink-0 border border-white/10 group-hover:border-purple/20 transition-all duration-300">
+              {/* Top Section - Company Logo and Title */}
+              <div className="flex items-center gap-5 relative z-10">
+                {/* Company Logo - No hover effects */}
+                <div className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0 overflow-hidden rounded-xl">
                   <img
-                    src={card.thumbnail}
-                    alt={card.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out"
+                    src={card.companyLogo}
+                    alt={`${card.title} logo`}
+                    className="w-full h-full object-contain"
                   />
                 </div>
 
-                <div>
-                  <h1 className="text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-purple/90 transition-colors duration-300">
+                {/* Title - Moved down to center with logo */}
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-lg md:text-xl font-bold tracking-tight text-white transition-colors duration-300 break-words">
                     {card.title}
                   </h1>
-                  <p className="text-gray-400 text-sm mt-1 flex items-center">
-                    <span className="inline-block w-2 h-2 rounded-full bg-purple mr-2"></span>
+                </div>
+              </div>
+
+              {/* Thumbnail and Dates Section */}
+              <div className="flex items-center justify-between w-full relative z-10 py-2 px-4 mt-2 rounded-lg bg-black/20 dark:bg-white/5 border border-purple/10 hover:border-purple/30 transform hover:-translate-y-1 transition-all duration-300">
+                {/* Thumbnail */}
+                <div className="flex items-center">
+                  <img
+                    src={card.thumbnail}
+                    alt={card.title}
+                    className="w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+
+                {/* Date Range with animation */}
+                <div className="flex items-center gap-2 overflow-hidden">
+                  <svg
+                    className="w-4 h-4 text-purple opacity-70 group-hover:opacity-100 transition-all duration-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect
+                      x="3"
+                      y="4"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <p className="text-gray-400 text-xs md:text-sm whitespace-nowrap group-hover:text-white transition-colors duration-300">
                     {card.startDate} - {card.endDate}
                   </p>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-white/80 leading-relaxed text-sm md:text-base relative z-10">
+              <p className="text-white/80 leading-relaxed text-sm md:text-base relative z-10 mt-2">
                 {card.desc}
               </p>
             </div>
