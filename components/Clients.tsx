@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { companies, testimonials } from "@/data";
+import { techs, testimonials } from "@/data";
 import { InfiniteMovingCards } from "./ui/InfiniteCards";
 
 const Clients = () => {
@@ -28,7 +28,7 @@ const Clients = () => {
         </h1>
 
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-20 max-lg:mt-10 px-4">
-          {companies.map((company) => (
+          {techs.map((company) => (
             <React.Fragment key={company.id}>
               <div className="flex md:max-w-60 max-w-32 gap-3 items-center">
                 <img

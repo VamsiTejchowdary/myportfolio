@@ -1,11 +1,21 @@
 "use client";
-import { FaLocationArrow } from "react-icons/fa6";
+import { FaDownload } from "react-icons/fa6";
 
 import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
 import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 
 const Hero = () => {
+  const handleDownload = () => {
+    // Create a temporary anchor element to trigger the download
+    const link = document.createElement("a");
+    link.href = "/Vamsi_Tej_Chowdary.pdf"; // Path to your resume in public folder
+    link.download = "Vamsi_Tej_Chowdary_Resume.pdf"; // Name of the downloaded file
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="pb-20 pt-36">
       {/**
@@ -61,13 +71,12 @@ const Hero = () => {
             Hi! I&apos;m Vamsi Tej, a Full Stack Developer based in Cincinnati.
           </p> */}
 
-          <a href="#about">
-            <MagicButton
-              title="Show my work"
-              icon={<FaLocationArrow />}
-              position="right"
-            />
-          </a>
+          <MagicButton
+            title="Grab My Resume"
+            icon={<FaDownload />}
+            position="right"
+            handleClick={handleDownload}
+          />
         </div>
       </div>
     </div>

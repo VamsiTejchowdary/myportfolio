@@ -16,7 +16,8 @@ interface EducationItem {
   course: string;
   startDate: string;
   endDate: string;
-  location: string;
+  city: string;
+  countryFlag: string;
   collegeImage: string;
   cgpa: string;
 }
@@ -92,11 +93,16 @@ const EducationCard: React.FC<{ edu: EducationItem }> = ({ edu }) => {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-1 mt-1">
-            <FaMapMarkerAlt className="w-3 h-3 text-purple" />
-            <p className="text-gray-400 text-xs group-hover:text-white/80 transition-colors duration-300 whitespace-nowrap">
-              {edu.location}
+          <div className="flex items-center gap-2 mt-1">
+            <FaMapMarkerAlt className="w-4 h-4 text-purple opacity-70 group-hover:opacity-100 transition-all duration-300" />
+            <p className="text-gray-400 text-xs group-hover:text-white/80 transition-colors duration-300">
+              {edu.city}
             </p>
+            <img
+              src={edu.countryFlag}
+              alt={`${edu.city} flag`}
+              className="w-5 h-3 object-contain"
+            />
           </div>
         </div>
       </div>
