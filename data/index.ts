@@ -245,7 +245,7 @@ export const workExperience = [
     thumbnail: "/exp1.svg",
     startDate: "Nov 2024",
     endDate: "Present",
-    companyLogo: "/tcp.png",
+    companyLogo: "/tcp-2.png",
   },
   {
     id: 2,
@@ -274,7 +274,7 @@ export const workExperience = [
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp3.svg",
     startDate: "Jan 2021",
-    endDate: "Oct 2021",
+    endDate: "Nov 2021",
     companyLogo: "/techciti.png",
   },
 ];
@@ -289,5 +289,28 @@ export const socialMedia = [
     id: 2,
     img: "/link.svg",
     link: "https://www.linkedin.com/in/vamsitejchowdary/",
+  },
+];
+export const education = [
+  {
+    id: 1,
+    university: "University of Cincinnati",
+    course: "Master of Engineering in Computer Science",
+    startDate: "Aug 2023",
+    endDate: "May 2025",
+    collegeImage: "/uc.png",
+    location: "Cincinnati, United States",
+    cgpa: "3.951/4.0",
+  },
+  {
+    id: 2,
+    university: "Karunya Institute of Technology",
+    course: "Bachelor of Technology in Computer Science",
+    startDate: "Jun 2018",
+    endDate: "May 2022",
+    college: "Example Institute of Technology",
+    collegeImage: "/karunya.png",
+    location: "coimbatore, United States",
+    cgpa: "8.81/10",
   },
 ];

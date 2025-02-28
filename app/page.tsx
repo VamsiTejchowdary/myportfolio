@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Footer from "@/components/Footer";
 import GoodWords from "@/components/Clients";
-import Approach from "@/components/Approach";
+import Education from "@/components/Education";
 import Experience from "@/components/Experience";
 import RecentProjects from "@/components/RecentProjects";
 
@@ -21,6 +21,7 @@ const Home = () => {
         <Grid />
         <RecentProjects />
         <Experience />
+        <Education />
         <GoodWords />
         <Footer />
       </div>
