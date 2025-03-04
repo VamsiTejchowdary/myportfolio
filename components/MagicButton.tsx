@@ -17,6 +17,7 @@ const MagicButton = ({
   otherClasses?: string;
   mailToLink?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }) => {
   const handleAction = () => {
     if (typeof window !== "undefined") {

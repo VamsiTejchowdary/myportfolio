@@ -13,18 +13,47 @@ const Footer = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [focused, setFocused] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [error, setError] = useState<string | null>(null); // New error state
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(null); // Clear error on change
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", message: "" });
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email, // Corrected to use formData
+          name: formData.name,
+          message: formData.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "Failed to send email. Server responded with an error."
+        );
+      }
+
+      console.log("Form submitted successfully:", formData);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", message: "" }); // Clear form only on success
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      setError("Failed to send email. Please try again.");
+    } finally {
+      setIsLoading(false); // Reset loading state
+    }
   };
 
   const handleFocus = (field: string) => {
@@ -78,7 +107,7 @@ const Footer = () => {
           <span className="text-purple">delivers</span>? Let’s make it happen!
         </motion.h1>
 
-        {/* Contact Form - No Box */}
+        {/* Contact Form */}
         <motion.div
           className="w-full max-w-md mt-8"
           initial={{ opacity: 0, y: 20 }}
@@ -118,6 +147,7 @@ const Footer = () => {
                   placeholder="Your Name"
                   className={inputClasses("name")}
                   required
+                  disabled={isLoading}
                 />
               </motion.div>
 
@@ -136,6 +166,7 @@ const Footer = () => {
                   placeholder="Your Email"
                   className={inputClasses("email")}
                   required
+                  disabled={isLoading}
                 />
               </motion.div>
 
@@ -155,8 +186,19 @@ const Footer = () => {
                     "message"
                   )} min-h-[120px] resize-none`}
                   required
+                  disabled={isLoading}
                 />
               </motion.div>
+
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-red-400 text-sm text-center"
+                >
+                  {error}
+                </motion.p>
+              )}
 
               <motion.div
                 className="mt-2 flex justify-center"
@@ -165,11 +207,12 @@ const Footer = () => {
                 transition={{ delay: 0.4 }}
               >
                 <MagicButton
-                  title="Say Hello"
+                  title={isLoading ? "Sending..." : "Say Hello"}
                   icon={<FaLocationArrow />}
                   position="right"
                   type="submit"
                   otherClasses="w-full max-w-[180px] bg-gradient-to-r from-purple to-purple/80 hover:from-purple/90 hover:to-purple text-white font-semibold"
+                  disabled={isLoading}
                 />
               </motion.div>
             </form>
