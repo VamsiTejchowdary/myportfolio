@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaDownload } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import MagicButton from "./MagicButton";
@@ -7,13 +7,45 @@ import { Spotlight } from "./ui/Spotlight";
 import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 
 const Hero = () => {
-  const [visitorCount, setVisitorCount] = useState(100);
+  const [visitorCount, setVisitorCount] = useState<number>(0);
+  const hasRun = useRef<boolean>(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisitorCount((prev) => prev + 1);
-    }, 2000);
-    return () => clearTimeout(timer);
+    if (hasRun.current) return;
+    hasRun.current = true;
+
+    const updateVisitorCount = async () => {
+      try {
+        const res = await fetch("/api/GetCount", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data: { count?: number; error?: string } = await res.json();
+        if (data.count !== undefined) {
+          setVisitorCount(data.count);
+        } else {
+          console.error("No count in response:", data);
+          // Fallback to GET if POST fails
+          const fallbackRes = await fetch("/api/GetCount", { method: "GET" });
+          const fallbackData = await fallbackRes.json();
+          setVisitorCount(fallbackData.count || 0);
+        }
+      } catch (error) {
+        console.error("Failed to update visitor count:", error);
+        // Fallback to GET on error
+        try {
+          const res = await fetch("/api/GetCount", { method: "GET" });
+          const data = await res.json();
+          setVisitorCount(data.count || 0);
+        } catch (fallbackError) {
+          console.error("Fallback fetch failed:", fallbackError);
+        }
+      }
+    };
+
+    updateVisitorCount();
   }, []);
 
   const handleDownload = () => {
@@ -62,7 +94,6 @@ const Hero = () => {
             className="text-center text-[40px] md:text-5xl lg:text-6xl"
           />
 
-          {/* Visitor Counter - Positioned above the button */}
           <div className="eye-tracker inline-flex items-center gap-1 relative mb-2">
             <FaEye className="text-purple/80 eye-icon text-sm md:text-base" />
             <span className="text-white/80 text-xs md:text-sm font-light count-number">
@@ -87,7 +118,7 @@ const Hero = () => {
 
 export default Hero;
 
-// Updated Global Styles
+// Global Styles (unchanged)
 const GlobalStyles = () => {
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -136,7 +167,6 @@ const GlobalStyles = () => {
         }
       }
       
-      /* Number animation */
       .count-number {
         position: relative;
         display: inline-block;
@@ -149,7 +179,6 @@ const GlobalStyles = () => {
         text-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
       }
 
-      /* Number increase animation */
       @keyframes countUp {
         0% {
           transform: translateY(10px);
@@ -165,7 +194,6 @@ const GlobalStyles = () => {
         animation: countUp 0.3s ease-out forwards;
       }
 
-      /* Tooltip styles */
       .eye-tracker:hover .tooltip {
         display: block;
         animation: fadeIn 0.2s ease-in;
@@ -182,7 +210,6 @@ const GlobalStyles = () => {
         }
       }
 
-      /* Responsive adjustments */
       @media (max-width: 768px) {
         .eye-tracker {
           transform: scale(0.9);
