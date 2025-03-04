@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import { FaLocationArrow } from "react-icons/fa6";
 import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
@@ -47,12 +47,15 @@ const Footer = () => {
 
       console.log("Form submitted successfully:", formData);
       setSubmitted(true);
-      setFormData({ name: "", email: "", message: "" }); // Clear form only on success
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 6000);
     } catch (error) {
       console.error("Failed to send email:", error);
       setError("Failed to send email. Please try again.");
     } finally {
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false);
     }
   };
 
