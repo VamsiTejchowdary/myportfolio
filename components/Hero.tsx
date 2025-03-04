@@ -5,10 +5,28 @@ import { FaEye } from "react-icons/fa";
 import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
 import { TextGenerateEffect } from "./ui/TextGenerateEffect";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Hero = () => {
   const [visitorCount, setVisitorCount] = useState<number>(0);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
   const hasRun = useRef<boolean>(false);
+  const counterRef = useRef<HTMLDivElement>(null);
+
+  // Function to animate count from start to end value
+  const animateCount = (start: number, end: number, duration: number) => {
+    let startTimestamp: number | null = null;
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const current = Math.floor(start + (end - start) * progress);
+      setVisitorCount(current);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+    requestAnimationFrame(step);
+  };
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -24,21 +42,19 @@ const Hero = () => {
         });
         const data: { count?: number; error?: string } = await res.json();
         if (data.count !== undefined) {
-          setVisitorCount(data.count);
+          animateCount(0, data.count, 3000); // 3-second animation
         } else {
           console.error("No count in response:", data);
-          // Fallback to GET if POST fails
           const fallbackRes = await fetch("/api/GetCount", { method: "GET" });
           const fallbackData = await fallbackRes.json();
-          setVisitorCount(fallbackData.count || 0);
+          animateCount(0, fallbackData.count || 0, 3000);
         }
       } catch (error) {
         console.error("Failed to update visitor count:", error);
-        // Fallback to GET on error
         try {
           const res = await fetch("/api/GetCount", { method: "GET" });
           const data = await res.json();
-          setVisitorCount(data.count || 0);
+          animateCount(0, data.count || 0, 2500);
         } catch (fallbackError) {
           console.error("Fallback fetch failed:", fallbackError);
         }
@@ -46,6 +62,27 @@ const Hero = () => {
     };
 
     updateVisitorCount();
+
+    // Add subtle parallax effect to the counter on mouse move
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!counterRef.current) return;
+
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+
+      const moveX = clientX / innerWidth - 0.5;
+      const moveY = clientY / innerHeight - 0.5;
+
+      counterRef.current.style.transform = `translate(${moveX * 3}px, ${
+        moveY * 3
+      }px)`;
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   const handleDownload = () => {
@@ -56,6 +93,9 @@ const Hero = () => {
     link.click();
     document.body.removeChild(link);
   };
+
+  // Format the visitor count with commas
+  const formattedCount = visitorCount.toLocaleString();
 
   return (
     <div className="pb-20 pt-36 relative">
@@ -85,31 +125,81 @@ const Hero = () => {
 
       <div className="flex justify-center relative my-20 z-10">
         <div className="max-w-[89vw] md:max-w-2xl lg:max-w-[60vw] flex flex-col items-center justify-center gap-6">
-          <p className="uppercase tracking-widest text-xs text-center text-blue-100 max-w-80">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="uppercase tracking-widest text-xs text-center text-blue-100 max-w-80"
+          >
             2+ years of experience with building web applications
-          </p>
+          </motion.p>
 
           <TextGenerateEffect
             words="Hi! I'm Vamsi Tej, a Full Stack Developer based in Cincinnati."
             className="text-center text-[40px] md:text-5xl lg:text-6xl"
           />
 
-          <div className="eye-tracker inline-flex items-center gap-1 relative mb-2">
-            <FaEye className="text-purple/80 eye-icon text-sm md:text-base" />
-            <span className="text-white/80 text-xs md:text-sm font-light count-number">
-              {visitorCount}
-            </span>
-            <div className="tooltip hidden absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-white/80 text-xs whitespace-nowrap">
-              No. of Visits
-            </div>
-          </div>
+          <motion.div
+            ref={counterRef}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 10,
+              delay: 0.5,
+            }}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+            className="eye-tracker inline-flex items-center gap-1 relative mb-2"
+          >
+            <motion.div
+              animate={{
+                scale: isHovering ? [1, 1.1, 1] : 1,
+              }}
+              transition={{
+                duration: 0.8,
+                repeat: isHovering ? Infinity : 0,
+                repeatType: "reverse",
+              }}
+            >
+              <FaEye className="text-purple/80 eye-icon text-sm md:text-base" />
+            </motion.div>
 
-          <MagicButton
-            title="Grab My Resume"
-            icon={<FaDownload />}
-            position="right"
-            handleClick={handleDownload}
-          />
+            <motion.span className="text-white/60 text-xs md:text-sm font-light count-number">
+              {formattedCount}
+            </motion.span>
+
+            <AnimatePresence>
+              {isHovering && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 5 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 text-white/60 text-xs whitespace-nowrap"
+                >
+                  No. of Visits
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.7,
+            }}
+          >
+            <MagicButton
+              title="Grab My Resume"
+              icon={<FaDownload />}
+              position="right"
+              handleClick={handleDownload}
+            />
+          </motion.div>
         </div>
       </div>
     </div>
@@ -118,7 +208,7 @@ const Hero = () => {
 
 export default Hero;
 
-// Global Styles (unchanged)
+// Global Styles with enhanced animations
 const GlobalStyles = () => {
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -172,26 +262,30 @@ const GlobalStyles = () => {
         display: inline-block;
         min-width: 20px;
         text-align: center;
+        letter-spacing: 0.03em;
+        font-variant-numeric: tabular-nums;
       }
       
       .eye-tracker:hover .count-number {
-        color: rgba(255, 255, 255, 0.9);
-        text-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 8px rgba(139, 92, 246, 0.2);
       }
 
       @keyframes countUp {
         0% {
           transform: translateY(10px);
           opacity: 0;
+          filter: blur(2px);
         }
         100% {
           transform: translateY(0);
           opacity: 1;
+          filter: blur(0);
         }
       }
 
       .count-number {
-        animation: countUp 0.3s ease-out forwards;
+        animation: countUp 0.5s ease-out forwards;
       }
 
       .eye-tracker:hover .tooltip {
