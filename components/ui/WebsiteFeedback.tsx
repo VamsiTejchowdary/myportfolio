@@ -101,7 +101,6 @@ const WebsiteFeedback = () => {
   const [showSparkles, setShowSparkles] = useState(false);
   const [likeCount, setLikeCount] = useState<number>(0);
 
-  // Fetch initial like count
   useEffect(() => {
     const fetchLikeCount = async () => {
       try {

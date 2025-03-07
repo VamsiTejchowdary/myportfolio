@@ -2,7 +2,6 @@ import { connectMongoDB } from "/lib/mongodb";
 import Likes from "/models/likes";
 import { NextResponse } from "next/server";
 
-// GET API: Fetch visitor count
 export async function GET(req) {
   try {
     await connectMongoDB();
@@ -23,23 +22,22 @@ export async function GET(req) {
   }
 }
 
-// POST API: Increment visitor count
 export async function POST(req) {
   try {
     await connectMongoDB();
 
     const likes = await Likes.findOneAndUpdate(
       {},
-      { $inc: { count: 1 } }, // Increment by 1
-      { new: true, upsert: true } // Return updated doc, create if not exists
+      { $inc: { count: 1 } },
+      { new: true, upsert: true }
     );
 
     console.log("Likes count updated:", likes.count);
     return NextResponse.json({ count: likes.count });
   } catch (error) {
-    console.error("Error updating visitor count:", error);
+    console.error("Error updating likes count:", error);
     return NextResponse.json(
-      { error: "Error updating visitor count." },
+      { error: "Error updating likes count." },
       { status: 500 }
     );
   }
