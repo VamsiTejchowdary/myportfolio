@@ -4,6 +4,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 import { motion } from "framer-motion";
+import WebsiteFeedback from "./ui/WebsiteFeedback";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
@@ -232,6 +233,8 @@ const Footer = () => {
         <p className="md:text-base text-sm md:font-normal font-light text-center">
           @VamsiTejChowdary
         </p>
+        <WebsiteFeedback />
+
         <div className="flex items-center gap-4 md:gap-6">
           {socialMedia.map((info, index) => (
             <motion.a
