@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,27 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
-  const [visible] = useState(true); // Removed unused setter since it's always visible now
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        // Scrolling down and past 50px threshold
+        setVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up
+        setVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const socialLinks = {
     github: socialMedia.find((social) => social.id === 1),
@@ -59,8 +79,8 @@ export const FloatingNav = ({
             border: "1px solid rgba(255, 255, 255, 0.2)",
           }}
         >
-          {/* Mobile View: All in single line */}
-          <div className="flex items-center justify-center space-x-3 md:hidden">
+          {/* Mobile View: All in single line with larger sizes */}
+          <div className="flex items-center justify-center space-x-4 md:hidden">
             {socialLinks.github && (
               <motion.a
                 href={socialLinks.github.link}
@@ -71,7 +91,8 @@ export const FloatingNav = ({
                 className="text-white/70 hover:text-white transition-all"
                 aria-label="GitHub Profile"
               >
-                <GithubIcon className="w-6 h-6 drop-shadow-md" />
+                <GithubIcon className="w-8 h-8 drop-shadow-md" />{" "}
+                {/* Increased from w-6 h-6 */}
               </motion.a>
             )}
             {navItems.map((navItem, idx) => (
@@ -79,11 +100,11 @@ export const FloatingNav = ({
                 key={`link-${idx}`}
                 href={navItem.link}
                 className={cn(
-                  "relative group flex items-center space-x-1 text-neutral-300 hover:text-white transition-all duration-300"
+                  "relative group flex items-center space-x-2 text-neutral-300 hover:text-white transition-all duration-300"
                 )}
               >
                 <motion.div
-                  className="flex items-center space-x-1"
+                  className="flex items-center space-x-2"
                   whileHover={{
                     scale: 1.05,
                     transition: { duration: 0.2 },
@@ -91,12 +112,15 @@ export const FloatingNav = ({
                 >
                   {navItem.icon && (
                     <span className="opacity-70 group-hover:opacity-100 transition-opacity">
-                      {navItem.icon}
+                      {React.cloneElement(navItem.icon as React.ReactElement, {
+                        className: "w-6 h-6", // Increased from w-5 h-5
+                      })}
                     </span>
                   )}
-                  <span className="text-xs font-medium tracking-tight">
+                  <span className="text-sm font-medium tracking-tight">
                     {navItem.name}
-                  </span>
+                  </span>{" "}
+                  {/* Increased from text-xs to text-sm */}
                 </motion.div>
               </Link>
             ))}
@@ -110,7 +134,8 @@ export const FloatingNav = ({
                 className="text-white/70 hover:text-white transition-all"
                 aria-label="LinkedIn Profile"
               >
-                <LinkedinIcon className="w-6 h-6 drop-shadow-md" />
+                <LinkedinIcon className="w-8 h-8 drop-shadow-md" />{" "}
+                {/* Increased from w-6 h-6 */}
               </motion.a>
             )}
           </div>
