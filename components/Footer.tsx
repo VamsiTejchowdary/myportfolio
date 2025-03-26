@@ -6,6 +6,7 @@ import MagicButton from "./MagicButton";
 import { motion } from "framer-motion";
 import WebsiteFeedback from "./ui/WebsiteFeedback";
 
+
 const Footer = () => {
   const [formData, setFormData] = useState({
     name: "",

@@ -75,6 +75,23 @@ export const gridItems = [
 export const projects = [
   {
     id: 1,
+    title: "HR Management Tool",
+    subtitle: "@CC",
+    des: "Careers Clutch – An AI-powered HR management tool that streamlines job postings and application tracking for a smarter hiring process.",
+    img: "/HR_tool_Thumbnail.png",
+    iconLists: [
+      "/next.svg",
+      "/tail.svg",
+      "/Node.js.svg",
+      "/MongoDB.svg",
+      "/Gitrepo.svg",
+      "/git.svg",
+    ],
+    link: "https://careers-clutch.vercel.app",
+    video: "First_Version_of_HR_Application.mov",
+  },
+  {
+    id: 2,
     title: "Telugu Films Insights",
     subtitle: "TFI",
     des: "TFI is a platform for Telugu movie enthusiasts, offering reviews, insights, and a chance to win free movie tickets through a lottery for submitting reviews. It connects fans and offers a community-driven approach to Telugu cinema.",
@@ -88,9 +105,10 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://telugufilminsights.com/home",
+    video: "TFI_Application.mov",
   },
   {
-    id: 2,
+    id: 3,
     title: "Foode Alert App",
     subtitle: "FAA",
     des: "FoodieAlert is an app designed to notify users about food truck locations and availability. It allows food truck owners to send updates to subscribers, helping customers stay informed about their favorite food trucks in real-time.",
@@ -105,9 +123,10 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://foodie-alert.vercel.app/login",
+    video: "",
   },
   {
-    id: 3,
+    id: 4,
     title: "Sleek Portfolio",
     subtitle: "Portfolio",
     des: "Welcome to my portfolio! Here, you’ll find a showcase of my work, projects, and skills, highlighting my journey as a full-stack developer.",
@@ -121,9 +140,10 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://vamsitejchowdary.com",
+    video: "",
   },
   {
-    id: 4,
+    id: 5,
     title: "Hours Tracker",
     subtitle: "Tracker",
     des: "A simple work-hour tracking app where employees can clock in, clock out, and log hours manually, inspired by Aramark/Sodexo systems for efficient shift management.",
@@ -137,6 +157,7 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://hourstracker.onrender.com",
+    video: "",
   },
 ];
 

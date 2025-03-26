@@ -1,13 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { socialMedia } from "@/data";
+import {
+  Menu,
+  X,
+  GithubIcon,
+  LinkedinIcon,
+  HomeIcon,
+  UserIcon,
+  FolderIcon,
+  MailIcon,
+} from "lucide-react";
 
 export const FloatingNav = ({
   navItems,
@@ -16,81 +22,259 @@ export const FloatingNav = ({
   navItems: {
     name: string;
     link: string;
-    icon?: JSX.Element;
+    icon?: React.ReactNode;
   }[];
   className?: string;
 }) => {
-  const { scrollYProgress } = useScroll();
-
-  // set true for the initial state so that nav bar is visible in the hero section
   const [visible, setVisible] = useState(true);
+  const [activeLink, setActiveLink] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (current) => {
-    // Check if current is not undefined and is a number
-    if (typeof current === "number") {
-      let direction = current! - scrollYProgress.getPrevious()!;
+  const socialLinks = {
+    github: socialMedia.find((social) => social.id === 1),
+    linkedin: socialMedia.find((social) => social.id === 2),
+  };
 
-      if (scrollYProgress.get() < 0.05) {
-        // also set true for the initial state
-        setVisible(true);
-      } else {
-        if (direction < 0) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      }
-    }
-  });
+  const navVariants = {
+    initial: { opacity: 0, y: -100 },
+    animate: {
+      y: visible ? 0 : -100,
+      opacity: visible ? 1 : 0,
+    },
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut",
+    },
+  };
+
+  const iconVariants = {
+    hover: {
+      scale: 1.1,
+      transition: { duration: 0.2 },
+    },
+    tap: { scale: 0.95 },
+  };
+
+  const mobileMenuVariants = {
+    initial: {
+      opacity: 0,
+      y: -50,
+      height: 0,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      height: "auto",
+    },
+    exit: {
+      opacity: 0,
+      y: -50,
+      height: 0,
+    },
+  };
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
-        initial={{
-          opacity: 1,
-          y: -100,
-        }}
-        animate={{
-          y: visible ? 0 : -100,
-          opacity: visible ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.2,
-        }}
+      <motion.nav
+        initial={navVariants.initial}
+        animate={navVariants.animate}
+        transition={navVariants.transition}
         className={cn(
-          // change rounded-full to rounded-lg
-          // remove dark:border-white/[0.2] dark:bg-black bg-white border-transparent
-          // change  pr-2 pl-8 py-2 to px-10 py-5
-          "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-10 py-5 rounded-lg border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-center space-x-4",
+          "fixed z-[5000] top-10 inset-x-0 mx-auto max-w-fit w-[95%] md:w-auto",
           className
         )}
-        style={{
-          backdropFilter: "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(17, 25, 40, 0.75)",
-          borderRadius: "12px",
-          border: "1px solid rgba(255, 255, 255, 0.125)",
-        }}
       >
-        {navItems.map((navItem: any, idx: number) => (
-          <Link
-            key={`link=${idx}`}
-            href={navItem.link}
-            className={cn(
-              "relative dark:text-neutral-50 items-center  flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
+        {/* Desktop Navigation */}
+        <div
+          className="hidden md:flex items-center justify-center space-x-6 px-6 py-4 rounded-2xl shadow-2xl"
+          style={{
+            backdropFilter: "blur(24px) saturate(220%)",
+            background:
+              "linear-gradient(135deg, rgba(17, 25, 40, 0.9), rgba(40, 50, 70, 0.85))",
+            boxShadow:
+              "0 15px 40px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.15)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+          }}
+        >
+          {/* Desktop Social and Nav Content */}
+          <div className="flex items-center space-x-4">
+            {/* GitHub */}
+            {socialLinks.github && (
+              <motion.a
+                href={socialLinks.github.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={iconVariants}
+                whileHover="hover"
+                whileTap="tap"
+                className="text-white/70 hover:text-white transition-all"
+                aria-label="GitHub Profile"
+              >
+                <GithubIcon className="w-6 h-6 drop-shadow-md" />
+              </motion.a>
             )}
+
+            {/* Navigation Items */}
+            <div className="flex items-center space-x-4 border-l border-white/10 pl-4">
+              {navItems.map((navItem, idx) => (
+                <Link
+                  key={`link-${idx}`}
+                  href={navItem.link}
+                  onMouseEnter={() => setActiveLink(navItem.link)}
+                  onMouseLeave={() => setActiveLink(null)}
+                  className={cn(
+                    "relative group flex items-center space-x-2 text-neutral-300 hover:text-white transition-all duration-300",
+                    activeLink === navItem.link ? "text-white" : ""
+                  )}
+                >
+                  <motion.div
+                    className="flex items-center space-x-2"
+                    initial={{ opacity: 0.6, scale: 0.95 }}
+                    whileHover={{
+                      opacity: 1,
+                      scale: 1.05,
+                      transition: { duration: 0.2 },
+                    }}
+                  >
+                    {navItem.icon && (
+                      <span className="opacity-70 group-hover:opacity-100 transition-opacity">
+                        {navItem.icon}
+                      </span>
+                    )}
+                    <span className="text-sm font-medium tracking-tight">
+                      {navItem.name}
+                    </span>
+                  </motion.div>
+
+                  <motion.span
+                    className="absolute bottom-[-3px] left-0 w-full h-[2px] bg-white/80"
+                    initial={{ scaleX: 0 }}
+                    animate={{
+                      scaleX: activeLink === navItem.link ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </Link>
+              ))}
+            </div>
+
+            {/* LinkedIn */}
+            {socialLinks.linkedin && (
+              <motion.a
+                href={socialLinks.linkedin.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={iconVariants}
+                whileHover="hover"
+                whileTap="tap"
+                className="text-white/70 hover:text-white transition-all"
+                aria-label="LinkedIn Profile"
+              >
+                <LinkedinIcon className="w-6 h-6 drop-shadow-md" />
+              </motion.a>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          {/* Mobile Hamburger Button */}
+          <motion.div
+            className="flex justify-end"
+            initial={navVariants.initial}
+            animate={navVariants.animate}
+            transition={navVariants.transition}
           >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            {/* add !cursor-pointer */}
-            {/* remove hidden sm:block for the mobile responsive */}
-            <span className=" text-sm !cursor-pointer">{navItem.name}</span>
-          </Link>
-        ))}
-        {/* remove this login btn */}
-        {/* <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button> */}
-      </motion.div>
+            <motion.button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              variants={iconVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className="bg-white/10 backdrop-blur-lg p-2 rounded-full"
+              aria-label={mobileMenuOpen ? "Close Menu" : "Open Menu"}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-white" />
+              ) : (
+                <Menu className="w-6 h-6 text-white" />
+              )}
+            </motion.button>
+          </motion.div>
+
+          {/* Mobile Menu */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={mobileMenuVariants}
+                className="mt-4 bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg overflow-hidden"
+              >
+                <div className="flex flex-col items-center space-y-4 p-4">
+                  {navItems.map((navItem, idx) => (
+                    <Link
+                      key={`mobile-link-${idx}`}
+                      href={navItem.link}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center space-x-2 text-white hover:bg-white/20 w-full p-2 rounded-lg transition-colors"
+                    >
+                      {navItem.icon}
+                      <span>{navItem.name}</span>
+                    </Link>
+                  ))}
+
+                  {/* Mobile Social Links */}
+                  <div className="flex space-x-4 pt-4 border-t border-white/10">
+                    {socialLinks.github && (
+                      <a
+                        href={socialLinks.github.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white/70 hover:text-white"
+                        aria-label="GitHub Profile"
+                      >
+                        <GithubIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                    {socialLinks.linkedin && (
+                      <a
+                        href={socialLinks.linkedin.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white/70 hover:text-white"
+                        aria-label="LinkedIn Profile"
+                      >
+                        <LinkedinIcon className="w-6 h-6" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.nav>
     </AnimatePresence>
   );
+};
+
+// Example usage with default icons
+export const DefaultFloatingNav = () => {
+  const defaultNavItems = [
+    { name: "Home", link: "/", icon: <HomeIcon className="w-4 h-4" /> },
+    { name: "About", link: "/about", icon: <UserIcon className="w-4 h-4" /> },
+    {
+      name: "Projects",
+      link: "/projects",
+      icon: <FolderIcon className="w-4 h-4" />,
+    },
+    {
+      name: "Contact",
+      link: "/contact",
+      icon: <MailIcon className="w-4 h-4" />,
+    },
+  ];
+
+  return <FloatingNav navItems={defaultNavItems} />;
 };
