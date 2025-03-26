@@ -24,7 +24,7 @@ export const FloatingNav = ({
   }[];
   className?: string;
 }) => {
-  const [visible, setVisible] = useState(true);
+  const [visible] = useState(true); // Removed unused setter since it's always visible now
 
   const socialLinks = {
     github: socialMedia.find((social) => social.id === 1),
@@ -49,7 +49,7 @@ export const FloatingNav = ({
         )}
       >
         <div
-          className="flex flex-col md:flex-row md:items-center md:justify-center px-4 md:px-6 py-3 md:py-4 rounded-2xl shadow-2xl"
+          className="flex flex-row items-center justify-center px-4 md:px-6 py-3 md:py-4 rounded-2xl shadow-2xl"
           style={{
             backdropFilter: "blur(24px) saturate(220%)",
             background:
@@ -59,18 +59,31 @@ export const FloatingNav = ({
             border: "1px solid rgba(255, 255, 255, 0.2)",
           }}
         >
-          {/* Mobile View: NavItems with names */}
-          <div className="flex flex-wrap justify-center gap-3 md:hidden">
+          {/* Mobile View: All in single line */}
+          <div className="flex items-center justify-center space-x-3 md:hidden">
+            {socialLinks.github && (
+              <motion.a
+                href={socialLinks.github.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-white/70 hover:text-white transition-all"
+                aria-label="GitHub Profile"
+              >
+                <GithubIcon className="w-6 h-6 drop-shadow-md" />
+              </motion.a>
+            )}
             {navItems.map((navItem, idx) => (
               <Link
                 key={`link-${idx}`}
                 href={navItem.link}
                 className={cn(
-                  "relative group flex items-center space-x-2 text-neutral-300 hover:text-white transition-all duration-300"
+                  "relative group flex items-center space-x-1 text-neutral-300 hover:text-white transition-all duration-300"
                 )}
               >
                 <motion.div
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-1"
                   whileHover={{
                     scale: 1.05,
                     transition: { duration: 0.2 },
@@ -81,12 +94,25 @@ export const FloatingNav = ({
                       {navItem.icon}
                     </span>
                   )}
-                  <span className="text-sm font-medium tracking-tight">
+                  <span className="text-xs font-medium tracking-tight">
                     {navItem.name}
                   </span>
                 </motion.div>
               </Link>
             ))}
+            {socialLinks.linkedin && (
+              <motion.a
+                href={socialLinks.linkedin.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-white/70 hover:text-white transition-all"
+                aria-label="LinkedIn Profile"
+              >
+                <LinkedinIcon className="w-6 h-6 drop-shadow-md" />
+              </motion.a>
+            )}
           </div>
 
           {/* Desktop View: Original layout without the vertical bar */}
@@ -107,8 +133,6 @@ export const FloatingNav = ({
               )}
 
               <div className="flex items-center space-x-4">
-                {" "}
-                {/* Removed border-l and pl-4 */}
                 {navItems.map((navItem, idx) => (
                   <Link
                     key={`link-${idx}`}
@@ -151,36 +175,6 @@ export const FloatingNav = ({
                 </motion.a>
               )}
             </div>
-          </div>
-
-          {/* Mobile View: Social Icons below */}
-          <div className="flex justify-center gap-6 mt-2 md:hidden">
-            {socialLinks.github && (
-              <motion.a
-                href={socialLinks.github.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-white/70 hover:text-white transition-all"
-                aria-label="GitHub Profile"
-              >
-                <GithubIcon className="w-6 h-6 drop-shadow-md" />
-              </motion.a>
-            )}
-            {socialLinks.linkedin && (
-              <motion.a
-                href={socialLinks.linkedin.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="text-white/70 hover:text-white transition-all"
-                aria-label="LinkedIn Profile"
-              >
-                <LinkedinIcon className="w-6 h-6 drop-shadow-md" />
-              </motion.a>
-            )}
           </div>
         </div>
       </motion.nav>
