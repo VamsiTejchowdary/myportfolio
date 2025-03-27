@@ -88,7 +88,7 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://careers-clutch.vercel.app",
-    video: "First_Version_of_HR_Application.mov",
+    video: "First_Version_of_HR_Application.mp4",
   },
   {
     id: 2,
@@ -105,7 +105,7 @@ export const projects = [
       "/git.svg",
     ],
     link: "https://telugufilminsights.com/home",
-    video: "TFI_Application.mov",
+    video: "TFIApplication.mp4",
   },
   {
     id: 3,
