@@ -131,7 +131,7 @@ const Hero = () => {
             transition={{ duration: 0.5 }}
             className="uppercase tracking-widest text-xs text-center text-blue-100 max-w-80"
           >
-            2+ years of experience with building web applications
+            3+ years of experience with building web applications
           </motion.p>
 
           <TextGenerateEffect
