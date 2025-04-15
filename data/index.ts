@@ -87,7 +87,7 @@ export const projects = [
       "/Gitrepo.svg",
       "/git.svg",
     ],
-    link: "https://careers-clutch.vercel.app",
+    link: "https://careerclutch.vercel.app/",
     video: "First_Version_of_HR_Application.mp4",
   },
   {
