@@ -294,7 +294,7 @@ export const techs = [
 export const workExperience = [
   {
     id: 1,
-    title: "Tech Intern",
+    title: "Full Stack Engineer",
     desc: "Utilized AWS Lightsail and CloudWatch for seamless hosting and real-time monitoring of websites, implementing health checks to ensure optimal performance. Configured AWS SNS to enable efficient, cross-platform notification systems. Focused on maintaining high uptime and adhering to security compliance for websites hosted on AWS. Additionally, led the end-to-end development of a new e-commerce website, leveraging minimal code tools and rapid deployment methodologies to ensure quick turnaround and functionality.",
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
