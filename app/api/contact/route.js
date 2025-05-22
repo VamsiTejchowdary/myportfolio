@@ -1,9 +1,9 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const MY_EMAIL = "d.vamsitej333@gmail.com"; // Your email for notifications
 
 export async function POST(req) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const { email, name, message } = await req.json();
 
