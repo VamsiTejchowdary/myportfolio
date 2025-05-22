@@ -37,9 +37,12 @@ const Experience = () => {
                   />
                 </div>
 
-                {/* Title - Moved down to center with logo */}
-                <div className="flex-1 min-w-0">
-                  <h1 className="text-lg md:text-xl font-bold tracking-tight text-white transition-colors duration-300 break-words">
+                {/* Title - Left aligned */}
+                <div className="flex-1 min-w-20">
+                  <h1
+                    className="text-lg md:text-xl font-bold tracking-tight text-white transition-colors duration-300 break-words"
+                    style={{ textAlign: "left", paddingLeft: "4.8rem" }} // Shifts title left
+                  >
                     {card.title}
                   </h1>
                 </div>

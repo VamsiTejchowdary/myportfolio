@@ -324,13 +324,23 @@ export const workExperience = [
   },
   {
     id: 4,
-    title: "Software Intern",
+    title: "Software Developer Intern",
     desc: "Developed a complaint registration portal that allows users to easily file complaints through a web application, eliminating the need to visit a police station. The platform provides a seamless, user-friendly interface for submitting grievances, making it more accessible for individuals to report issues from any location at their convenience. This system improves efficiency by streamlining the process, ensuring quicker resolution times and reducing the administrative burden on local authorities, while also maintaining secure data handling for users complaints.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp3.svg",
     startDate: "Jan 2021",
     endDate: "Nov 2021",
     companyLogo: "/techciti.png",
+  },
+  {
+    id: 5,
+    title: "Intern Programmer",
+    desc: "Developed a robust Customer Feedback Management System using .NET Framework (C#) for backend services and React.js for the frontend. Designed and implemented RESTful APIs, enabling seamless data flow and real-time updates via Socket.io. Managed data storage and retrieval using SQL Server, including optimized tables and stored procedures for high-volume feedback data. Built a real-time admin dashboard for monitoring trends and performance. Followed Agile methodology, implemented unit/integration testing, and automated deployment using Azure DevOps CI/CD pipelines. Also created thorough documentation for system architecture and future scalability.",
+    className: "md:col-span-2", // change to md:col-span-2
+    thumbnail: "/exp1.svg",
+    startDate: "May 2020",
+    endDate: "Dec 2020",
+    companyLogo: "/axzora_logo.png",
   },
 ];
 
