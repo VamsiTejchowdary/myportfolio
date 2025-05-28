@@ -135,7 +135,7 @@ const Hero = () => {
           </motion.p>
 
           <TextGenerateEffect
-            words="Hi! I'm Vamsi Tej, a Full Stack .NET Developer based in Cincinnati."
+            words="Hi! I'm Vamsi Tej, a Full Stack Developer based in Cincinnati."
             className="text-center text-[40px] md:text-5xl lg:text-6xl"
           />
 
